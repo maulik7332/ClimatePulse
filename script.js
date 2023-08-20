@@ -80,48 +80,96 @@
             }
           }
 
-          // function updateForecast(data, unit, type) {
-          //   weatherCards.innerHTML = "";
-          //   let day = 0;
-          //   let numCards = 0;
-          //   if (type === "day") {
-          //     numCards = 24;
-          //   } else {
-          //     numCards = 7;
-          //   }
-          //   for (let i = 0; i < numCards; i++) {
-          //     let card = document.createElement("div");
-          //     card.classList.add("card");
-          //     let dayName = getHour(data[day].datetime);
-          //     if (type === "week") {
-          //       dayName = getDayName(data[day].datetime);
-          //     }
-          //     let dayTemp = data[day].temp;
-          //     if (unit === "f") {
-          //       dayTemp = celciusToFahrenheit(data[day].temp);
-          //     }
-          //     let iconCondition = data[day].icon;
-          //     let iconSrc = getIcon(iconCondition);
-          //     let tempUnit = "°C";
-          //     if (unit === "f") {
-          //       tempUnit = "°F";
-          //     }
-          //     card.innerHTML = `
-          //                 <h2 class="day-name">${dayName}</h2>
-          //             <div class="card-icon">
-          //               <img src="${iconSrc}" class="day-icon" alt="" />
-          //             </div>
-          //             <div class="day-temp">
-          //               <h2 class="temp">${dayTemp}</h2>
-          //               <span class="temp-unit">${tempUnit}</span>
-          //             </div>
-          //   `;
-          //     weatherCards.appendChild(card);
-          //     day++;
-          //   }
-          // }
-          
+          // for forcast
+          let hourlyorWeek = "week",
+          unit = "c",
+          weatherCards = document.querySelector("#weather-cards");
 
+          if (hourlyorWeek === "hourly") {
+            updateForecast(objectData.days[0].hours, unit, "day");
+          } else {
+            updateForecast(objectData.days, unit, "week");
+          }
+          function updateForecast(objectData, unit, type) {
+            weatherCards.innerHTML = "";
+            let day = 0;
+            let numCards = 0;
+            if (type === "day") {
+              numCards = 24;
+            } else {
+              numCards = 7;
+            }
+            console.log(getHour(objectData[day].datetime));
+            console.log(getDayName(objectData[day].datetime));
+            console.log(objectData[day].datetime);
+            for (let i = 0; i < numCards; i++) {
+              let card = document.createElement("div");
+              card.classList.add("card");
+              let dayName = getHour(objectData[day].datetime);
+              if (type === "week") {
+                dayName = getDayName(objectData[day].datetime);
+              }
+              let dayTemp = objectData[day].temp;
+              if (unit === "f") {
+                dayTemp = celciusToFahrenheit(objectData[day].temp);
+              }
+              let iconCondition = objectData[day].icon;
+              let iconSrc = getIcon(iconCondition);
+              let tempUnit = "°C";
+              if (unit === "f") {
+                tempUnit = "°F";
+              }
+              if(i==0){
+                card.innerHTML = `
+                <h2 class="day-name">Today</h2>
+            <div class="card-icon">
+              <img src="${iconSrc}" class="day-icon" alt="" />
+            </div>
+            <div class="day-temp">
+              <h2 class="temp">${dayTemp}</h2>
+              <span class="temp-unit">${tempUnit}</span>
+            </div>
+  `;
+              }else{
+
+                card.innerHTML = `
+                            <h2 class="day-name">${dayName}</h2>
+                        <div class="card-icon">
+                          <img src="${iconSrc}" class="day-icon" alt="" />
+                        </div>
+                        <div class="day-temp">
+                          <h2 class="temp">${dayTemp}</h2>
+                          <span class="temp-unit">${tempUnit}</span>
+                        </div>
+              `;
+              }
+              weatherCards.appendChild(card);
+              day++;
+            }
+          }
+          function getHour(time) {
+            let hour = time.split(":")[0];
+            let min = time.split(":")[1];
+            if (hour > 12) {
+              hour = hour - 12;
+              return `${hour}:${min} PM`;
+            } else {
+              return `${hour}:${min} AM`;
+            }
+          }
+          function getDayName(date) {
+            let day = new Date(date);
+            let days = [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ];
+            return days[day.getDay()];
+          }
 
           const icon1 = getIcon(condition1);
           icon.src=icon1;
