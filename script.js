@@ -1,13 +1,11 @@
-// document.getElementById("searchbtn").addEventListener("click", function() {
+document.getElementById("searchbtn").addEventListener("click", function() {
     let city = document.getElementById("query").value;
-    // fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+city+"?unitGroup=metric&key=EJ6UBL2JEQGYB3AA4ENASN62J&contentType=json").then((data)=>{
-    fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Surat?unitGroup=metric&key=EJ6UBL2JEQGYB3AA4ENASN62J&contentType=json").then((data)=>{
+    fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+city+"?unitGroup=metric&key=EJ6UBL2JEQGYB3AA4ENASN62J&contentType=json").then((data)=>{
         return data.json();
     }).then((objectData)=>{
 
 
       // Fetch day name according to given date
-      console.log(objectData);
       const date_time1= document.getElementById("date-time");
         const timezone1 = objectData.timezone;
         const options1 = {
@@ -39,31 +37,13 @@
       const currentTime1 = formatter1.format(new Date(objectData.days[i].datetime));
       const currentDay1 = formatter1.formatToParts(new Date(objectData.days[i].datetime)).find(part => part.type === 'weekday').value;
       const temp2 = objectData.days[i].temp;
-      console.log(currentDay1);
-      console.log(temp2);
-//       let card = document.createElement("div");
-//       card.classList.add("card");
-//       card.innerHTML = `
-//       <h2 class="day-name">${currentDay1}</h2>
-//   <div class="card-icon">
-//     <img src="" class="day-icon" alt="" />
-//   </div>
-//   <div class="day-temp">
-//     <h2 class="temp">${temp2}</h2>
-//     <span class="temp-unit"></span>
-//   </div>
-// `;
-// weatherCards.appendChild(card);
-    // weatherCards.appendChild(card);
 
-      // const 
         }
 
 
         // icon
         const icon = document.getElementById("icon");
         const condition1 = objectData.currentConditions.icon;
-        console.log(condition1);
         function getIcon(condition1) {
             if (condition1 == "partly-cloudy-day") {
               return "https://i.ibb.co/PZQXH8V/27.png";
@@ -99,9 +79,6 @@
             } else {
               numCards = 7;
             }
-            console.log(getHour(objectData[day].datetime));
-            console.log(getDayName(objectData[day].datetime));
-            console.log(objectData[day].datetime);
             for (let i = 0; i < numCards; i++) {
               let card = document.createElement("div");
               card.classList.add("card");
@@ -147,6 +124,7 @@
               day++;
             }
           }
+
           function getHour(time) {
             let hour = time.split(":")[0];
             let min = time.split(":")[1];
@@ -157,6 +135,7 @@
               return `${hour}:${min} AM`;
             }
           }
+
           function getDayName(date) {
             let day = new Date(date);
             let days = [
@@ -173,7 +152,6 @@
 
           const icon1 = getIcon(condition1);
           icon.src=icon1;
-          console.log(icon1);
 
         let location = document.getElementById("location");
         let temp = document.getElementById("temp");
@@ -196,14 +174,10 @@
         const formatter = new Intl.DateTimeFormat('en-US', options);
         const currentTime = formatter.format(new Date());
         const currentDay = formatter.formatToParts(new Date()).find(part => part.type === 'weekday').value;
-        console.log(currentDay);
         date_time.innerHTML = currentTime;
-        console.log(`Current time in ${timezone}: ${currentTime}`);
 
         //Condition
-        // const condition = document.getElementById("condition");
         document.getElementById("condition").innerHTML=objectData.days[0].conditions;
-        console.log(objectData.days[0].uvindex);
         
         
         //UV Index
@@ -230,7 +204,6 @@
         //Wind Speed
         const wind_speed = document.getElementById("wind_speed");
         wind_speed.innerHTML=objectData.days[0].windspeed;
-        // console.log(objectData.days[0].windspeed)
 
         //Sunset and Sunrise
         const sun_rise = document.getElementById("sun_rise");
@@ -263,7 +236,6 @@
             sun_set.innerHTML=newSunset1;
 
             //Humidity
-            // humidity
             const humidity1 = document.getElementById("humidity");
             humidity1.innerHTML=objectData.days[0].humidity;
             const humidityStatus = document.getElementById("humiditystatus");
@@ -328,4 +300,4 @@
               }
             updateAirQualityStatus();
     })
-// })
+})
